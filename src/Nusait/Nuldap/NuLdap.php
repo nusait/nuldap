@@ -54,7 +54,7 @@ class NuLdap
         } else {
             $searchTerm = null;
         }
-        if (! is_null($searchTerm)) {
+        if ( ! is_null($searchTerm)) {
             $search = ldap_search($connection, 'dc=northwestern,dc=edu', $searchTerm);
             $entries = ldap_get_entries($connection, $search);
             if ($entries['count'] != 0) {
@@ -71,12 +71,11 @@ class NuLdap
         $bind = ldap_bind($connection, $this->rdn, $this->password);
         $search = ldap_search($connection, 'dc=northwestern,dc=edu', "(nuIdTag={$netid})");
         $entries = ldap_get_entries($connection, $search);
-        $data = null;
-        if ($entries['count'] != 0) {
-            $data = $entries[0];
+        if ($entries['count'] == 0) {
+            return null;
         }
 
-        return $data;
+        return $entries[0];
     }
 
     public function setPassword($password)
@@ -87,5 +86,24 @@ class NuLdap
     public function setRdn($rdn)
     {
         $this->rdn = $rdn;
+    }
+
+    public function parseUser($ldapUser)
+    {
+        if (is_null($ldapUser)) {
+            return $ldapUser;
+        }
+
+        return [
+            'phone'       => isset($ldapUser['telephonenumber'][0]) ? $ldapUser['telephonenumber'][0] : null,
+            'email'       => isset($ldapUser['mail'][0]) ? $ldapUser['mail'][0] : null,
+            'title'       => isset($ldapUser['title'][0]) ? $ldapUser['title'][0] : null,
+            'first_name'  => isset($ldapUser['givenname'][0]) ? $ldapUser['givenname'][0] : null,
+            'last_name'   => isset($ldapUser['sn'][0]) ? $ldapUser['sn'][0] : null,
+            'netid'       => isset($ldapUser['uid'][0]) ? $ldapUser['uid'][0] : null,
+            'displayname' => isset($ldapUser['displayname'][0]) ? $ldapUser['displayname'][0] : null,
+            'emplid'      => isset($ldapUser['employeenumber'][0]) ? $ldapUser['employeenumber'][0] : null,
+            'studentid'   => isset($ldapUser['nustudentnumber'][0]) ? $ldapUser['nustudentnumber'][0] : null
+        ];
     }
 }
