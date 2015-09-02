@@ -71,7 +71,10 @@ class NuLdap
         $bind = ldap_bind($connection, $this->rdn, $this->password);
         $search = ldap_search($connection, 'dc=northwestern,dc=edu', "(nuIdTag={$netid})");
         $entries = ldap_get_entries($connection, $search);
-        $data = $entries[0];
+        $data = null;
+        if ($entries['count'] != 0) {
+            $data = $entries[0];
+        }
 
         return $data;
     }
