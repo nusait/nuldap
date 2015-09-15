@@ -37,25 +37,13 @@ class NuLdap
         return (bool)$bind;
     }
 
-    public function searchField($field, $value)
+    public function search($searchString)
     {
         $results = null;
-        $field = trim(strtolower($field));
         $connection = $this->connect();
         $bind = ldap_bind($connection, $this->rdn, $this->password);
-        if ($field == 'netid') {
-            $searchTerm = "(nuidtag={$value})";
-        } elseif ($field == 'email') {
-            $searchTerm = "(mail={$value})";
-        } elseif ($field == 'emplid') {
-            $searchTerm = "(employeenumber={$value})";
-        } elseif ($field == 'studentid') {
-            $searchTerm = "(nustudentnumber={$value})";
-        } else {
-            $searchTerm = null;
-        }
-        if ( ! is_null($searchTerm)) {
-            $search = ldap_search($connection, 'dc=northwestern,dc=edu', $searchTerm);
+        if ( ! is_null($searchString)) {
+            $search = ldap_search($connection, 'dc=northwestern,dc=edu', $searchString);
             $entries = ldap_get_entries($connection, $search);
             if ($entries['count'] != 0) {
                 $results = $entries[0];
@@ -67,15 +55,26 @@ class NuLdap
 
     public function searchNetid($netid)
     {
-        $connection = $this->connect();
-        $bind = ldap_bind($connection, $this->rdn, $this->password);
-        $search = ldap_search($connection, 'dc=northwestern,dc=edu', "(nuIdTag={$netid})");
-        $entries = ldap_get_entries($connection, $search);
-        if ($entries['count'] == 0) {
-            return null;
-        }
+        $searchString = "(nuidtag={$netid})";
+        return $this->search($searchString);
+    }
 
-        return $entries[0];
+    public function searchEmplid($emplid)
+    {
+        $searchString = "(employeenumber={$emplid})";
+        return $this->search($searchString);
+    }
+
+    public function searchStudentid($studentid)
+    {
+        $searchString = "(nustudentnumber={$studentid})";
+        return $this->search($searchString);
+    }
+
+    public function searchEmail($email)
+    {
+        $searchString = "(nustudentnumber={$email})";
+        return $this->search($searchString);
     }
 
     public function setPassword($password)
@@ -88,22 +87,31 @@ class NuLdap
         $this->rdn = $rdn;
     }
 
-    public function parseUser($ldapUser)
+    public function parseUser($ldapUser, $transformer = null)
     {
         if (is_null($ldapUser)) {
             return $ldapUser;
         }
 
-        return [
-            'phone'       => isset($ldapUser['telephonenumber'][0]) ? $ldapUser['telephonenumber'][0] : null,
-            'email'       => isset($ldapUser['mail'][0]) ? $ldapUser['mail'][0] : null,
-            'title'       => isset($ldapUser['title'][0]) ? $ldapUser['title'][0] : null,
-            'first_name'  => isset($ldapUser['givenname'][0]) ? $ldapUser['givenname'][0] : null,
-            'last_name'   => isset($ldapUser['sn'][0]) ? $ldapUser['sn'][0] : null,
-            'netid'       => isset($ldapUser['uid'][0]) ? $ldapUser['uid'][0] : null,
-            'displayname' => isset($ldapUser['displayname'][0]) ? $ldapUser['displayname'][0] : null,
-            'emplid'      => isset($ldapUser['employeenumber'][0]) ? $ldapUser['employeenumber'][0] : null,
-            'studentid'   => isset($ldapUser['nustudentnumber'][0]) ? $ldapUser['nustudentnumber'][0] : null
-        ];
+        if (is_null($transformer)) {
+            $transformer = [
+                'phone'       => 'telephonenumber',
+                'email'       => 'mail',
+                'title'       => 'title',
+                'first_name'  => 'givenname',
+                'last_name'   => 'sn',
+                'netid'       => 'uid',
+                'displayname' => 'displayname',
+                'emplid'      => 'employeenumber',
+                'studentid'   => 'nustudentnumber'
+            ];
+        }
+
+        $parsedUser = [];
+        foreach ($transformer as $key => $ldapkey) {
+            $parsedUser[$key] = isset($ldapUser[$ldapkey][0]) ? $ldapUser[$ldapkey][0] : null;
+        }
+
+        return $parsedUser;
     }
 }
