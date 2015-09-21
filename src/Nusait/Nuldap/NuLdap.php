@@ -73,7 +73,7 @@ class NuLdap
 
     public function searchEmail($email)
     {
-        $searchString = "(nustudentnumber={$email})";
+        $searchString = "(mail={$email})";
         return $this->search($searchString);
     }
 
