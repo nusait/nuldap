@@ -41,7 +41,7 @@ class NuLdap
     {
         $results = null;
         $connection = $this->connect();
-        $bind = ldap_bind($connection, $this->rdn, $this->password);
+        $bind = @ldap_bind($connection, $this->rdn, $this->password);
         if ( ! is_null($searchString)) {
             $search = ldap_search($connection, 'dc=northwestern,dc=edu', $searchString);
             $entries = ldap_get_entries($connection, $search);
