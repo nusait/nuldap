@@ -11,6 +11,18 @@ class NuldapServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
+    /**
+     * Bootstrap the application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__ . '/../../config/ldap.php' => config_path('ldap.php'),
+        ]);
+    }
+
 	/**
 	 * Register the service provider.
 	 *
