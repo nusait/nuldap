@@ -10,8 +10,8 @@ class NuLdap
     public function __construct(
         $rdn = null,
         $password = null,
-        $host = 'ldaps://registry.northwestern.edu/',
-        $port = 636
+        $host = 'directory.northwestern.edu',
+        $port = 389
     ) {
         $this->rdn = $rdn;
         $this->password = $password;
