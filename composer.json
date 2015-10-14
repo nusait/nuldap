@@ -1,10 +1,10 @@
 {
-    "name": "nusait/nuldap",
+    "name": "azamtav/nuldap",
     "description": "",
     "authors": [
         {
-            "name": "Hao Luo",
-            "email": "hao@northwestern.edu"
+            "name": "Vahid Azam",
+            "email": "vahidazam@gmail.com"
         }
     ],
     "require": {
