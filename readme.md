@@ -3,12 +3,12 @@ This is a LDAP package meant for Northwestern University. (But can be extended f
 
 ## Installation via Composer
 ```
-composer require nusait/nuldap
+composer require azamtav/nuldap
 ```
 or manually
 ```json
 require: {
-  "nusait/sso-middleware": "~1.0"
+  "azamtav/nuldap": "~1.1"
 }
 ```
 Then update composer
