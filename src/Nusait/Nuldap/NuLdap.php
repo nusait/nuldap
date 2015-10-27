@@ -86,7 +86,7 @@ class NuLdap
         if (is_null($transformer)) {
             $transformer = new DefaultUserTransformer();
         }
-        
+
         return $transformer->transform($ldapUser);
     }
 }

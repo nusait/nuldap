@@ -5,7 +5,7 @@ class DefaultUserTransformer extends AbstractTransformer
     public function transform($ldapUser)
     {
         return [
-            'netid'       => $this->getSetValueOrNull($ldapUser, 'uidtag'),
+            'netid'       => $this->getSetValueOrNull($ldapUser, 'uid'),
             'phone'       => $this->getSetValueOrNull($ldapUser, 'telephonenumber'),
             'email'       => $this->getSetValueOrNull($ldapUser, 'mail'),
             'title'       => $this->getSetValueOrNull($ldapUser, 'title'),
