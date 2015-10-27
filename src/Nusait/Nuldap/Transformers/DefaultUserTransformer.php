@@ -12,8 +12,8 @@ class DefaultUserTransformer extends AbstractTransformer
             'first_name'  => $this->getSetValueOrNull($ldapUser, 'givenname'),
             'last_name'   => $this->getSetValueOrNull($ldapUser, 'sn'),
             'displayname' => $this->getSetValueOrNull($ldapUser, 'displayname'),
-            'emplid'      => $this->getSetValueOrNull($ldapUser, 'employeenumber'),
-            'studentid'   => $this->getSetValueOrNull($ldapUser, 'nustudentnumber')
+            'emplid'      => (int) $this->getSetValueOrNull($ldapUser, 'employeenumber'),
+            'studentid'   => (int) $this->getSetValueOrNull($ldapUser, 'nustudentnumber')
         ];
     }
 }

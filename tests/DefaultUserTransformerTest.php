@@ -18,8 +18,8 @@ class DefaultUserTransformerTest extends PHPUnit_Framework_TestCase {
             'first_name' => 'Firstname',
             'last_name' => 'Lastname',
             'displayname' => 'Firstname Lastname',
-            'emplid' => '1234567',
-            'studentid' => '1234567'
+            'emplid' => 1234567,
+            'studentid' => 1234567
         ];
         $this->assertEquals($expectedUser, $transformedUser);
     }
