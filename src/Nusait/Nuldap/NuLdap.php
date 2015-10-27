@@ -1,5 +1,7 @@
 <?php namespace Nusait\Nuldap;
 
+use Nusait\Nuldap\SearchStringGenerators;
+
 class NuLdap
 {
     protected $rdn;
@@ -10,9 +12,13 @@ class NuLdap
     public function __construct(
         $rdn = null,
         $password = null,
-        $host = 'directory.northwestern.edu',
-        $port = 389
+        $host = null,
+        $port = null
     ) {
+        if(is_null($host) || is_null($port))
+        {
+            throw new \Exception('Must define host and port for Nuldap');
+        }
         $this->rdn = $rdn;
         $this->password = $password;
         $this->host = $host;
@@ -37,44 +43,32 @@ class NuLdap
         return (bool)$bind;
     }
 
-    public function search($searchString)
+    public function search($field, $query)
     {
-        $results = null;
-        $connection = $this->connect();
-        $bind = @ldap_bind($connection, $this->rdn, $this->password);
-        if ( ! is_null($searchString)) {
-            $search = ldap_search($connection, 'dc=northwestern,dc=edu', $searchString);
-            $entries = ldap_get_entries($connection, $search);
-            if ($entries['count'] != 0) {
-                $results = $entries[0];
-            }
+        if( is_null($query) or is_null($field)) {
+            return null;
         }
 
-        return $results;
+        $generator = $this->createSearchStringInstance($field);
+        $searchString = $generator->getSearchString($query);
+
+        $connection = $this->connect();
+        $bind = @ldap_bind($connection, $this->rdn, $this->password);
+
+        $search = ldap_search($connection, 'dc=northwestern,dc=edu', $searchString);
+        $entries = ldap_get_entries($connection, $search);
+        if ($entries['count'] === 0) {
+            return null;
+        }
+
+        return $entries[0];
     }
 
-    public function searchNetid($netid)
-    {
-        $searchString = "(nuidtag={$netid})";
-        return $this->search($searchString);
-    }
-
-    public function searchEmplid($emplid)
-    {
-        $searchString = "(employeenumber={$emplid})";
-        return $this->search($searchString);
-    }
-
-    public function searchStudentid($studentid)
-    {
-        $searchString = "(nustudentnumber={$studentid})";
-        return $this->search($searchString);
-    }
-
-    public function searchEmail($email)
-    {
-        $searchString = "(mail={$email})";
-        return $this->search($searchString);
+    protected function createSearchStringInstance($field) {
+        $generatorClassName = 'SearchStringGenerators\\' .
+            ucfirst($field) .
+            'SearchStringGenerator';
+        return new $generatorClassName;
     }
 
     public function setPassword($password)
