@@ -1,6 +1,7 @@
 <?php namespace Nusait\Nuldap;
 
-use Nusait\Nuldap\SearchStringGenerators;
+use Nusait\Nuldap\Contracts\TransformerInterface;
+use Nusait\Nuldap\Transformers\DefaultUserTransformer;
 
 class NuLdap
 {
@@ -27,7 +28,7 @@ class NuLdap
         return $this;
     }
 
-    public function connect()
+    protected function connect()
     {
         $resource = ldap_connect($this->host, $this->port) or die("No connect $this->host");
 
@@ -52,11 +53,9 @@ class NuLdap
         $generator = $this->createSearchStringInstance($field);
         $searchString = $generator->getSearchString($query);
 
-        $connection = $this->connect();
-        $bind = @ldap_bind($connection, $this->rdn, $this->password);
+        $baseDN = 'dc=northwestern,dc=edu';
+        $entries = $this->ldapSearch($baseDN, $searchString);
 
-        $search = ldap_search($connection, 'dc=northwestern,dc=edu', $searchString);
-        $entries = ldap_get_entries($connection, $search);
         if ($entries['count'] === 0) {
             return null;
         }
@@ -64,48 +63,30 @@ class NuLdap
         return $entries[0];
     }
 
+    protected function ldapSearch($baseDN, $searchString)
+    {
+        $connection = $this->connect();
+        $bind = @ldap_bind($connection, $this->rdn, $this->password);
+        $search = ldap_search($connection, $baseDN, $searchString);
+        return ldap_get_entries($connection, $search);
+    }
+
     protected function createSearchStringInstance($field) {
-        $generatorClassName = 'SearchStringGenerators\\' .
+        $generatorClassName = '\\Nusait\\Nuldap\\SearchStringGenerators\\' .
             ucfirst($field) .
             'SearchStringGenerator';
         return new $generatorClassName;
     }
 
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
-    public function setRdn($rdn)
-    {
-        $this->rdn = $rdn;
-    }
-
-    public function parseUser($ldapUser, $transformer = null)
+    public function parseUser($ldapUser, TransformerInterface $transformer = null)
     {
         if (is_null($ldapUser)) {
-            return $ldapUser;
+            return null;
         }
-
         if (is_null($transformer)) {
-            $transformer = [
-                'phone'       => 'telephonenumber',
-                'email'       => 'mail',
-                'title'       => 'title',
-                'first_name'  => 'givenname',
-                'last_name'   => 'sn',
-                'netid'       => 'uid',
-                'displayname' => 'displayname',
-                'emplid'      => 'employeenumber',
-                'studentid'   => 'nustudentnumber'
-            ];
+            $transformer = new DefaultUserTransformer();
         }
-
-        $parsedUser = [];
-        foreach ($transformer as $key => $ldapkey) {
-            $parsedUser[$key] = isset($ldapUser[$ldapkey][0]) ? $ldapUser[$ldapkey][0] : null;
-        }
-
-        return $parsedUser;
+        
+        return $transformer->transform($ldapUser);
     }
 }
