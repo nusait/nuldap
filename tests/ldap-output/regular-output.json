@@ -1,0 +1,83 @@
+{
+  "telephonenumber": {
+    "count": 1,
+    "0": "+1 555 555 5555"
+  },
+  "0": "telephonenumber",
+  "mail": {
+    "count": 1,
+    "0": "test-user@northwestern.edu"
+  },
+  "1": "mail",
+  "title": {
+    "count": 1,
+    "0": "Developer"
+  },
+  "2": "title",
+  "ou": {
+    "count": 2,
+    "0": "People",
+    "1": "Northwestern Staff"
+  },
+  "3": "ou",
+  "postaladdress": {
+    "count": 1,
+    "0": "Northwestern University"
+  },
+  "4": "postaladdress",
+  "nuotheraddress": {
+    "count": 1,
+    "0": "Northwestern University"
+  },
+  "5": "nuotheraddress",
+  "uid": {
+    "count": 1,
+    "0": "abc123"
+  },
+  "6": "uid",
+  "givenname": {
+    "count": 1,
+    "0": "Firstname"
+  },
+  "7": "givenname",
+  "uidnumber": {
+    "count": 1,
+    "0": "12345"
+  },
+  "8": "uidnumber",
+  "sn": {
+    "count": 1,
+    "0": "Lastname"
+  },
+  "9": "sn",
+  "displayname": {
+    "count": 1,
+    "0": "Firstname Lastname"
+  },
+  "10": "displayname",
+  "cn": {
+    "count": 4,
+    "0": "Lastname",
+    "1": "Lastname,Firstname",
+    "2": "firstname",
+    "3": "firstname lastname"
+  },
+  "11": "cn",
+  "nuothertitle": {
+    "count": 1,
+    "0": "Developer"
+  },
+  "12": "nuothertitle",
+  "nuotherdepartment": {
+    "count": 1,
+    "0": "Northwestern"
+  },
+  "13": "nuotherdepartment",
+  "nuotherphone": {
+    "count": 1,
+    "0": "555-555-5555"
+  },
+  "14": "nuotherphone",
+  "count": 15,
+  "dn": "uid=abc123, ou=People, dc=northwestern, dc=edu"
+}

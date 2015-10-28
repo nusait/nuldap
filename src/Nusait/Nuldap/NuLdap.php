@@ -1,5 +1,8 @@
 <?php namespace Nusait\Nuldap;
 
+use Nusait\Nuldap\Contracts\TransformerInterface;
+use Nusait\Nuldap\Transformers\DefaultUserTransformer;
+
 class NuLdap
 {
     protected $rdn;
@@ -10,9 +13,13 @@ class NuLdap
     public function __construct(
         $rdn = null,
         $password = null,
-        $host = 'directory.northwestern.edu',
-        $port = 389
+        $host = null,
+        $port = null
     ) {
+        if(is_null($host) || is_null($port))
+        {
+            throw new \Exception('Must define host and port for Nuldap');
+        }
         $this->rdn = $rdn;
         $this->password = $password;
         $this->host = $host;
@@ -21,7 +28,7 @@ class NuLdap
         return $this;
     }
 
-    public function connect()
+    protected function connect()
     {
         $resource = ldap_connect($this->host, $this->port) or die("No connect $this->host");
 
@@ -37,81 +44,49 @@ class NuLdap
         return (bool)$bind;
     }
 
-    public function search($searchString)
+    public function search($field, $query)
     {
-        $results = null;
+        if( is_null($query) or is_null($field)) {
+            return null;
+        }
+
+        $generator = $this->createSearchStringInstance($field);
+        $searchString = $generator->getSearchString($query);
+
+        $baseDN = 'dc=northwestern,dc=edu';
+        $entries = $this->ldapSearch($baseDN, $searchString);
+
+        if ($entries['count'] === 0) {
+            return null;
+        }
+
+        return $entries[0];
+    }
+
+    protected function ldapSearch($baseDN, $searchString)
+    {
         $connection = $this->connect();
         $bind = @ldap_bind($connection, $this->rdn, $this->password);
-        if ( ! is_null($searchString)) {
-            $search = ldap_search($connection, 'dc=northwestern,dc=edu', $searchString);
-            $entries = ldap_get_entries($connection, $search);
-            if ($entries['count'] != 0) {
-                $results = $entries[0];
-            }
-        }
-
-        return $results;
+        $search = ldap_search($connection, $baseDN, $searchString);
+        return ldap_get_entries($connection, $search);
     }
 
-    public function searchNetid($netid)
-    {
-        $searchString = "(nuidtag={$netid})";
-        return $this->search($searchString);
+    protected function createSearchStringInstance($field) {
+        $generatorClassName = '\\Nusait\\Nuldap\\SearchStringGenerators\\' .
+            ucfirst($field) .
+            'SearchStringGenerator';
+        return new $generatorClassName;
     }
 
-    public function searchEmplid($emplid)
-    {
-        $searchString = "(employeenumber={$emplid})";
-        return $this->search($searchString);
-    }
-
-    public function searchStudentid($studentid)
-    {
-        $searchString = "(nustudentnumber={$studentid})";
-        return $this->search($searchString);
-    }
-
-    public function searchEmail($email)
-    {
-        $searchString = "(mail={$email})";
-        return $this->search($searchString);
-    }
-
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
-    public function setRdn($rdn)
-    {
-        $this->rdn = $rdn;
-    }
-
-    public function parseUser($ldapUser, $transformer = null)
+    public function parseUser($ldapUser, TransformerInterface $transformer = null)
     {
         if (is_null($ldapUser)) {
-            return $ldapUser;
+            return null;
         }
-
         if (is_null($transformer)) {
-            $transformer = [
-                'phone'       => 'telephonenumber',
-                'email'       => 'mail',
-                'title'       => 'title',
-                'first_name'  => 'givenname',
-                'last_name'   => 'sn',
-                'netid'       => 'uid',
-                'displayname' => 'displayname',
-                'emplid'      => 'employeenumber',
-                'studentid'   => 'nustudentnumber'
-            ];
+            $transformer = new DefaultUserTransformer();
         }
 
-        $parsedUser = [];
-        foreach ($transformer as $key => $ldapkey) {
-            $parsedUser[$key] = isset($ldapUser[$ldapkey][0]) ? $ldapUser[$ldapkey][0] : null;
-        }
-
-        return $parsedUser;
+        return $transformer->transform($ldapUser);
     }
 }
