@@ -73,7 +73,7 @@ class NuLdap
 
     protected function createSearchStringInstance($field) {
         $generatorClassName = '\\Nusait\\Nuldap\\SearchStringGenerators\\' .
-            ucfirst($field) .
+            ucfirst(strtolower(trim($field))) .
             'SearchStringGenerator';
         return new $generatorClassName;
     }
