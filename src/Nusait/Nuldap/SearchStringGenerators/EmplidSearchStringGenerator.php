@@ -2,7 +2,8 @@
 
 use Nusait\Nuldap\Contracts\SearchStringInterface;
 
-class EmplidSearchStringGenerator implements SearchStringInterface {
+class EmplidSearchStringGenerator implements SearchStringInterface
+{
     public function getSearchString($emplid)
     {
         return "(employeenumber={$emplid})";

@@ -16,8 +16,7 @@ class NuLdap
         $host = null,
         $port = null
     ) {
-        if(is_null($host) || is_null($port))
-        {
+        if (is_null($host) || is_null($port)) {
             throw new \Exception('Must define host and port for Nuldap');
         }
         $this->rdn = $rdn;
@@ -46,7 +45,7 @@ class NuLdap
 
     public function search($field, $query)
     {
-        if( is_null($query) or is_null($field)) {
+        if (is_null($query) or is_null($field)) {
             return null;
         }
 
@@ -68,13 +67,16 @@ class NuLdap
         $connection = $this->connect();
         $bind = @ldap_bind($connection, $this->rdn, $this->password);
         $search = ldap_search($connection, $baseDN, $searchString);
+
         return ldap_get_entries($connection, $search);
     }
 
-    protected function createSearchStringInstance($field) {
+    protected function createSearchStringInstance($field)
+    {
         $generatorClassName = '\\Nusait\\Nuldap\\SearchStringGenerators\\' .
             ucfirst(strtolower(trim($field))) .
             'SearchStringGenerator';
+
         return new $generatorClassName;
     }
 

@@ -2,7 +2,8 @@
 
 use Nusait\Nuldap\Contracts\SearchStringInterface;
 
-class StudentidSearchStringGenerator implements SearchStringInterface {
+class StudentidSearchStringGenerator implements SearchStringInterface
+{
     public function getSearchString($studentid)
     {
         return "(nustudentnumber={$studentid})";
