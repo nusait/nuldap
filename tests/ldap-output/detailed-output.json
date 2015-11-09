@@ -1,0 +1,142 @@
+{
+  "nusnapgroups": {
+    "count": 25,
+    "0": "activepw",
+    "1": "bulkmailids",
+    "2": "flg:email",
+    "3": "flg:exchangeHR",
+    "4": "flg:forward",
+    "5": "flg:password",
+    "6": "flg:vds",
+    "7": "flg:visible",
+    "8": "flg:vpn",
+    "9": "flg:whitepages",
+    "10": "flg:wireless",
+    "11": "greekportal:admin",
+    "12": "medschool",
+    "13": "member",
+    "14": "migrated",
+    "15": "ndomain:law",
+    "16": "nu",
+    "17": "passwordstat",
+    "18": "passwordstat.a",
+    "19": "privschaddr",
+    "20": "privschaddru",
+    "21": "reqaima",
+    "22": "reqkerberos",
+    "23": "reqnunetid",
+    "24": "srv:merle"
+  },
+  "0": "nusnapgroups",
+  "telephonenumber": {
+    "count": 1,
+    "0": "+1 555 555 5555"
+  },
+  "1": "telephonenumber",
+  "mail": {
+    "count": 1,
+    "0": "test-user@northwestern.edu"
+  },
+  "2": "mail",
+  "title": {
+    "count": 1,
+    "0": "Developer"
+  },
+  "3": "title",
+  "ou": {
+    "count": 2,
+    "0": "People",
+    "1": "Staff"
+  },
+  "4": "ou",
+  "postaladdress": {
+    "count": 1,
+    "0": "Northwestern University"
+  },
+  "5": "postaladdress",
+  "nuotherphone": {
+    "count": 1,
+    "0": "555-555-5555"
+  },
+  "6": "nuotherphone",
+  "nuotherdepartment": {
+    "count": 1,
+    "0": "Northwestern University"
+  },
+  "7": "nuotherdepartment",
+  "nuothertitle": {
+    "count": 1,
+    "0": "Developer"
+  },
+  "8": "nuothertitle",
+  "uid": {
+    "count": 1,
+    "0": "abc123"
+  },
+  "9": "uid",
+  "objectclass": {
+    "count": 6,
+    "0": "top",
+    "1": "person",
+    "2": "organizationalPerson",
+    "3": "inetOrgPerson",
+    "4": "nuperson",
+    "5": "eduPerson"
+  },
+  "10": "objectclass",
+  "givenname": {
+    "count": 1,
+    "0": "Firstname"
+  },
+  "11": "givenname",
+  "uidnumber": {
+    "count": 1,
+    "0": "12345"
+  },
+  "12": "uidnumber",
+  "nuidtag": {
+    "count": 1,
+    "0": "abc123"
+  },
+  "13": "nuidtag",
+  "sn": {
+    "count": 1,
+    "0": "Lastname"
+  },
+  "14": "sn",
+  "displayname": {
+    "count": 1,
+    "0": "Firstname Lastname"
+  },
+  "15": "displayname",
+  "employeenumber": {
+    "count": 1,
+    "0": "1234567"
+  },
+  "16": "employeenumber",
+  "cn": {
+    "count": 4,
+    "0": "lastname",
+    "1": "lastname,firstname",
+    "2": "firstname",
+    "3": "firstname lastname"
+  },
+  "17": "cn",
+  "nustudentnumber": {
+    "count": 1,
+    "0": "1234567"
+  },
+  "18": "nustudentnumber",
+  "nucurriculumonly": {
+    "count": 1,
+    "0": "CGRD"
+  },
+  "19": "nucurriculumonly",
+  "nuotheraddress": {
+    "count": 1,
+    "0": "Northwestern University"
+  },
+  "20": "nuotheraddress",
+  "count": 21,
+  "dn": "uid=abc123, ou=People, dc=northwestern, dc=edu"
+}
