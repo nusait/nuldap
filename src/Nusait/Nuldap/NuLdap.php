@@ -91,4 +91,19 @@ class NuLdap
 
         return $transformer->transform($ldapUser);
     }
+
+    public function __call($name, $arguments)
+    {
+        $regex = '/^search(.+)/';
+        if(preg_match($regex, $name, $matches))
+        {
+            $field = strtolower(trim($matches[1]));
+            if(! isset($arguments[0]))
+            {
+                throw new \InvalidArgumentException();
+            }
+            return $this->search($field, $arguments[0]);
+        }
+        throw new \BadMethodCallException();
+    }
 }
