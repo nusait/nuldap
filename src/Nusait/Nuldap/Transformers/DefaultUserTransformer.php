@@ -4,6 +4,8 @@ class DefaultUserTransformer extends AbstractTransformer
 {
     public function transform($ldapUser)
     {
+        $emplid = $this->getSetValueOrNull($ldapUser, 'employeenumber');
+        $studentid = $this->getSetValueOrNull($ldapUser, 'nustudentnumber');
         return [
             'netid'       => $this->getSetValueOrNull($ldapUser, 'uid'),
             'phone'       => $this->getSetValueOrNull($ldapUser, 'telephonenumber'),
@@ -12,8 +14,8 @@ class DefaultUserTransformer extends AbstractTransformer
             'first_name'  => $this->getSetValueOrNull($ldapUser, 'givenname'),
             'last_name'   => $this->getSetValueOrNull($ldapUser, 'sn'),
             'displayname' => $this->getSetValueOrNull($ldapUser, 'displayname'),
-            'emplid'      => (int)$this->getSetValueOrNull($ldapUser, 'employeenumber'),
-            'studentid'   => (int)$this->getSetValueOrNull($ldapUser, 'nustudentnumber')
+            'emplid'      => is_null($emplid) ? $emplid : (int) $emplid,
+            'studentid'   => is_null($studentid) ? $studentid : (int) $studentid,
         ];
     }
 }
