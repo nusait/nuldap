@@ -2,6 +2,7 @@
 
 use Nusait\Nuldap\Contracts\TransformerInterface;
 use Nusait\Nuldap\Transformers\DefaultUserTransformer;
+use Exception;
 
 class NuLdap
 {
@@ -30,6 +31,7 @@ class NuLdap
     protected function connect()
     {
         $resource = ldap_connect($this->host, $this->port) or die("No connect $this->host");
+        ldap_set_option($resource, LDAP_OPT_NETWORK_TIMEOUT, 2);
 
         return $resource;
     }
@@ -65,7 +67,14 @@ class NuLdap
     protected function ldapSearch($baseDN, $searchString)
     {
         $connection = $this->connect();
-        $bind = @ldap_bind($connection, $this->rdn, $this->password);
+        try {
+            $bind = ldap_bind($connection, $this->rdn, $this->password);
+        }
+        catch(Exception $e)
+        {
+            throw new Exception('Cannot connect to the ldap server');
+        }
+
         $search = ldap_search($connection, $baseDN, $searchString);
 
         return ldap_get_entries($connection, $search);
