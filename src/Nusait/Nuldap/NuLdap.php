@@ -4,11 +4,11 @@ use Nusait\Nuldap\Contracts\TransformerInterface;
 use Nusait\Nuldap\Transformers\DefaultUserTransformer;
 use Exception;
 
-/*
- * @method array searchNetid(string $netid) Searches for a user by netid.
- * @method array searchEmplid(string $emplid) Searches for a user by emplid.
- * @method array searchEmail(string $email) Searches for a user by email.
- * @method array searchStudentid(string $studentid) Searches for a user by student id.
+/**
+ * @method array searchNetid($netid) Searches for a user by netid.
+ * @method array searchEmplid($emplid) Searches for a user by emplid.
+ * @method array searchEmail($email) Searches for a user by email.
+ * @method array searchStudentid($studentid) Searches for a user by student id.
  */
 class NuLdap
 {
