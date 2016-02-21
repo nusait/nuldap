@@ -18,7 +18,7 @@ class NuLdap
         $port = null
     ) {
         if (is_null($host) || is_null($port)) {
-            throw new \Exception('Must define host and port for Nuldap');
+            throw new Exception('Must define host and port for Nuldap');
         }
         $this->rdn = $rdn;
         $this->password = $password;
