@@ -35,6 +35,15 @@ $ldap->search('studentid', $studentid);
 ```
 This returns the raw ldap metadata.
 
+You can also search using the magic methods:
+
+```php
+$ldap->searchNetid($netid);
+$ldap->searchEmail($email);
+$ldap->searchEmplid($emplid);
+$ldap->searchStudentid($studentid);
+```
+
 ## Parsing User
 ```php
 $ldap->parseUser($ldapUser [, $transformer ]);
