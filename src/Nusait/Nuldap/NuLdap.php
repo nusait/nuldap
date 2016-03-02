@@ -1,5 +1,6 @@
 <?php namespace Nusait\Nuldap;
 
+use Nusait\Nuldap\Contracts\LdapInterface;
 use Nusait\Nuldap\Contracts\TransformerInterface;
 use Nusait\Nuldap\Transformers\DefaultUserTransformer;
 use Exception;
@@ -10,7 +11,7 @@ use Exception;
  * @method array searchEmail($email) Searches for a user by email.
  * @method array searchStudentid($studentid) Searches for a user by student id.
  */
-class NuLdap
+class NuLdap implements LdapInterface
 {
     protected $rdn;
     protected $password;
