@@ -17,12 +17,14 @@ class NuLdap implements LdapInterface
     protected $password;
     protected $host;
     protected $port;
+    protected $timeout;
 
     public function __construct(
         $rdn = null,
         $password = null,
         $host = null,
-        $port = null
+        $port = null,
+        $timeout = 2
     ) {
         if (is_null($host) || is_null($port)) {
             throw new Exception('Must define host and port for Nuldap');
@@ -31,6 +33,7 @@ class NuLdap implements LdapInterface
         $this->password = $password;
         $this->host = $host;
         $this->port = $port;
+        $this->timeout = $timeout;
 
         return $this;
     }
@@ -38,7 +41,7 @@ class NuLdap implements LdapInterface
     protected function connect()
     {
         $resource = ldap_connect($this->host, $this->port) or die("No connect $this->host");
-        ldap_set_option($resource, LDAP_OPT_NETWORK_TIMEOUT, 2);
+        ldap_set_option($resource, LDAP_OPT_NETWORK_TIMEOUT, $this->timeout);
 
         return $resource;
     }
