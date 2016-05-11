@@ -12,16 +12,16 @@ class DefaultUserTransformerTest extends PHPUnit_Framework_TestCase
     {
         $this->transformer = new DefaultUserTransformer();
         $this->regExpectedUser = [
-            'netid'                => 'abc123',
-            'phone'                => '+1 555 555 5555',
-            'email'                => 'test-user@northwestern.edu',
-            'title'                => 'Developer',
-            'first_name'           => 'Firstname',
-            'last_name'            => 'Lastname',
-            'displayname'          => 'Firstname Lastname',
-            'emplid'               => null,
-            'studentid'            => null,
-            'photo'                => null,
+            'netid'               => 'abc123',
+            'phone'               => '+1 555 555 5555',
+            'email'               => 'test-user@northwestern.edu',
+            'title'               => 'Developer',
+            'first_name'          => 'Firstname',
+            'last_name'           => 'Lastname',
+            'displayname'         => 'Firstname Lastname',
+            'emplid'              => null,
+            'studentid'           => null,
+            'photo'               => null,
             'primary_affiliation' => null
         ];
 
