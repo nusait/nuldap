@@ -11,4 +11,9 @@ abstract class AbstractTransformer implements TransformerInterface
     {
         return isset($input[$key][0]) ? $input[$key][0] : null;
     }
+
+    protected function getPhoto($input, $key)
+    {
+        return isset($input[$key][0]) ? base64_encode($input[$key][0]) : null;
+    }
 }

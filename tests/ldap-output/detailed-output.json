@@ -137,6 +137,16 @@
     "0": "Northwestern University"
   },
   "20": "nuotheraddress",
-  "count": 21,
+  "21": "jpegphoto",
+  "jpegphoto" : {
+    "count": 0,
+    "0": ""
+  },
+  "22": "edupersonprimaryaffiliation",
+  "edupersonprimaryaffiliation" : {
+    "count": 1,
+    "0": "staff"
+  },
+  "count": 23,
   "dn": "uid=abc123, ou=People, dc=northwestern, dc=edu"
 }
